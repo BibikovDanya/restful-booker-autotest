@@ -1,38 +1,36 @@
 package restfulbooker;
 
-import io.restassured.response.Response;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
-public class GetBookingTest {
-    private static final String baseUrl = "http://localhost:3001";
-//    private static final String baseUrl = "http://restful-booker.herokuapp.com";
+public class GetBookingTest extends BaseBookingTest {
 
-    @BeforeAll
-    public static void initSpecification(){
-        Specification.installSpecification(Specification.requestSpec(baseUrl + "/booking"));
-        Specification.installSpecification(Specification.responseSpecOK200());
+
+    @Test
+    public void getBookingTest() {
+        String regexDateFormat = "^(19|20)\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$";
+        BookData response = getBookingById(1).jsonPath().getObject("", BookData.class);
+
+        Assertions.assertAll("Checks",
+                () -> Assertions.assertNotNull(response.getFirstName(), "firstName is null"),
+                () -> Assertions.assertNotNull(response.getLastName(), "lastName is null"),
+                () -> Assertions.assertTrue(response.getTotalPrice() > 0, "totalPrice < 0"),
+                () -> Assertions.assertTrue(response.isDepositPaid(), "depositPaid false"),
+                () -> Assertions.assertTrue(response.getBookingDates().getCheckIn().matches(regexDateFormat), "date checkIn does not match the format"),
+                () -> Assertions.assertTrue(response.getBookingDates().getCheckOut().matches(regexDateFormat), "date checkOut does not match the format")
+        );
+
+
     }
 
     @Test
-    public void getBooking(){
-        BookData response = given()
-                .when()
-                .get("/1")
-                .then().log().all()
-                .extract().body().jsonPath().getObject("", BookData.class);
+    public void bookNotFoundTest() {
+        Specification.installSpecification(Specification.responseSpecError404());
+        getBookingById(404);
 
-        Assertions.assertEquals("Eric", response.getFirstname());
-        Assertions.assertEquals("Jones", response.getLastname());
-        Assertions.assertEquals(193, response.getTotalprice());
-        Assertions.assertFalse(response.isDepositpaid());
-        Assertions.assertEquals("2017-04-23", response.getBookingdates().getCheckin());
-        Assertions.assertEquals("2022-10-15", response.getBookingdates().getCheckout());
     }
 
 

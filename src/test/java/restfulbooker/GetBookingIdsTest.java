@@ -11,23 +11,24 @@ import java.util.Objects;
 
 import static io.restassured.RestAssured.*;
 
-public class GetBookingIdsTest {
+public class GetBookingIdsTest extends BaseBookingTest {
     private static final String baseUrl = "http://localhost:3001";
 //    private static final String baseUrl = "http://restful-booker.herokuapp.com";
 
-    @BeforeAll
-    public static void initSpecification(){
-       Specification.installSpecification(Specification.requestSpec(baseUrl + "/booking"));
-       Specification.installSpecification(Specification.responseSpecOK200());
-    }
+//    @BeforeAll
+//    public static void initSpecification(){
+//       Specification.installSpecification(Specification.requestSpec(baseUrl + "/booking"));
+//       Specification.installSpecification(Specification.responseSpecOK200());
+//    }
 
     @Test
     public void getBookingIdTest() {
-        Response response = given()
-                .when()
-                .get()
-                .then().log().all()
-                .extract().response();
+//        Response response2 = given()
+//                .when()
+//                .get()
+//                .then().log().all()
+//                .extract().response();
+       Response response = getAllBooking();
 
         Assertions.assertEquals(200, response.statusCode());
         Assertions.assertNotNull(response);

@@ -31,6 +31,13 @@ public class Specification {
                 .build();
     }
 
+    public static ResponseSpecification responseSpecError404() {
+
+        return new ResponseSpecBuilder()
+                .expectStatusCode(404)
+                .build();
+    }
+
     public static ResponseSpecification responseSpecUnique(int status) {
 
         return new ResponseSpecBuilder()
