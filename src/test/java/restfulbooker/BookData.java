@@ -26,9 +26,9 @@ public class BookData {
     public BookData() {
     }
 
-    public BookData(String firstName, String lastname, Integer totalPrice, boolean depositPaid, BookingDates bookingDates, String additionalNeeds) {
+    public BookData(String firstName, String lastName, Integer totalPrice, boolean depositPaid, BookingDates bookingDates, String additionalNeeds) {
         this.firstName = firstName;
-        this.lastName = lastname;
+        this.lastName = lastName;
         this.totalPrice = totalPrice;
         this.depositPaid = depositPaid;
         this.bookingDates = bookingDates;
