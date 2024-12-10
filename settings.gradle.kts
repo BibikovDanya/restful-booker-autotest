@@ -1,2 +1,1 @@
-rootProject.name = "javaApiTesting"
-
+rootProject.name = "restful-booker-autotest"
