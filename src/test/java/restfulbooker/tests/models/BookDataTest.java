@@ -1,97 +1,100 @@
 package restfulbooker.tests.models;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import restfulbooker.models.BookData;
-import restfulbooker.models.BookingDates;
 
 class BookDataTest {
+    private BookData bookData;
+
+    @BeforeEach
+    public void setUp() {
+        bookData = new BookData("Jim", "Brown", 111, true, "2022-01-01", "2022-01-02", "Breakfast");
+    }
 
 
     @Test
     void equalsSameObjectTest() {
-//        BookingDates bookingDates = new BookingDates("2022-01-01", "2022-01-02");
-//        BookData book = new BookData("Jim", "Brown", 111, true, bookingDates, "Breakfast");
-        BookData book = new BookData("Jim", "Brown", 111, true, "2022-01-01", "2022-01-02", "Breakfast");
-        Assertions.assertEquals(book, book);
+        Assertions.assertEquals(bookData, bookData);
     }
 
     @Test
     void equalsNullTest() {
-        BookingDates bookingDates = new BookingDates("2022-01-01", "2022-01-02");
-        BookData book = new BookData("Jim", "Brown", 111, true, bookingDates, "Breakfast");
-        Assertions.assertNotEquals(book, null);
+        Assertions.assertFalse(bookData == null);
     }
 
     @Test
     void equalsDifferentClassTest() {
         Object obj = new Object();
-        BookingDates bookingDates = new BookingDates("2022-01-01", "2022-01-02");
-        BookData book = new BookData("Jim", "Brown", 111, true, bookingDates, "Breakfast");
-        Assertions.assertNotEquals(book, obj);
+        Assertions.assertNotEquals(bookData, obj);
     }
 
     @Test
     void equalsSameValuesTest() {
-        BookingDates bookingDates = new BookingDates("2022-01-01", "2022-01-02");
-        BookingDates bookingDates2 = new BookingDates("2022-01-01", "2022-01-02");
-        BookData book = new BookData("Jim", "Brown", 111, true, bookingDates, "Breakfast");
-        BookData book2 = new BookData("Jim", "Brown", 111, true, bookingDates2, "Breakfast");
-        Assertions.assertEquals(book, book2);
+        BookData bookData2 = new BookData("Jim", "Brown", 111, true, "2022-01-01", "2022-01-02", "Breakfast");
+        Assertions.assertEquals(bookData, bookData2);
     }
 
     @Test
-    void equalsDifferentValuesDepositPaidTest() {
-        BookingDates bookingDates = new BookingDates("2022-01-01", "2022-01-02");
-        BookingDates bookingDates2 = new BookingDates("2022-01-01", "2022-01-02");
-        BookData book = new BookData("Jim", "Brown", 111, true, bookingDates, "Breakfast");
-        BookData book2 = new BookData("Jim", "Brown", 111, false, bookingDates2, "Breakfast");
-        Assertions.assertNotEquals(book, book2);
+    void equalsDifferentValuesFirstNameTest() {
+        BookData bookDataDiffFirstName = new BookData("Alex", "Brown", 111, false, "2022-01-01", "2022-01-02", "Breakfast");
+        Assertions.assertNotEquals(bookData, bookDataDiffFirstName);
     }
 
     @Test
     void equalsDifferentValuesLastNameTest() {
-        BookingDates bookingDates = new BookingDates("2022-01-01", "2022-01-02");
-        BookingDates bookingDates2 = new BookingDates("2022-01-01", "2022-01-02");
-        BookData book = new BookData("", "Brown", 111, true, bookingDates, "Breakfast");
-        BookData book2 = new BookData("Jim", "Watson", 111, true, bookingDates2, "Breakfast");
-        Assertions.assertNotEquals(book, book2);
+        BookData bookDataDiffLastName = new BookData("Jim", "Watson", 111, true, "2022-01-01", "2022-01-02", "Breakfast");
+        Assertions.assertNotEquals(bookData, bookDataDiffLastName);
+
     }
+
+    @Test
+    void equalsDifferentValuesTotalPriceTest() {
+        BookData bookDataDiffTotalPrice = new BookData("Jim", "Brown", 240, false, "2022-01-01", "2022-01-02", "Breakfast");
+        Assertions.assertNotEquals(bookData, bookDataDiffTotalPrice);
+    }
+
+    @Test
+    void equalsDifferentValuesDepositPaidTest() {
+        BookData bookDataDiffDepositPaid = new BookData("Jim", "Brown", 111, false, "2022-01-01", "2022-01-02", "Breakfast");
+        Assertions.assertNotEquals(bookData, bookDataDiffDepositPaid);
+    }
+
 
     @Test
     void equalsDifferentValuesBookingDatesTest() {
-        BookingDates bookingDates = new BookingDates("2022-01-01", "2022-01-02");
-        BookingDates bookingDates2 = new BookingDates("2022-11-11", "2022-01-02");
-        BookData book = new BookData("Jim", "Brown", 111, true, bookingDates, "Breakfast");
-        BookData book2 = new BookData("Jim", "Brown", 111, true, bookingDates2, "Breakfast");
-        Assertions.assertNotEquals(book, book2);
+        BookData bookDataDiffBookingDates = new BookData("Jim", "Brown", 111, true, "2022-11-01", "2022-01-02", "Breakfast");
+        Assertions.assertNotEquals(bookData, bookDataDiffBookingDates);
     }
 
     @Test
-    public void testHashCode_Consistency() {
-        BookingDates bookingDates = new BookingDates("2022-01-01", "2022-01-02");
-        BookingDates bookingDates2 = new BookingDates("2022-01-01", "2022-01-02");
-        BookData book = new BookData("Jim", "Brown", 111, true, bookingDates, "Breakfast");
-        BookData book2 = new BookData("Jim", "Brown", 111, true, bookingDates2, "Breakfast");
-        Assertions.assertEquals(book.hashCode(), book2.hashCode());
+    void equalsDifferentValuesAdditionalNeedsTest() {
+        BookData bookDataDiffBookingDates = new BookData("Jim", "Brown", 111, true, "2022-11-01", "2022-01-02", "");
+        Assertions.assertNotEquals(bookData, bookDataDiffBookingDates);
+    }
 
+    @Test
+    public void hashCodeConsistencyTest() {
+        BookData bookData2 = new BookData("Jim", "Brown", 111, true, "2022-01-01", "2022-01-02", "Breakfast");
+        Assertions.assertEquals(bookData.hashCode(), bookData2.hashCode());
+    }
+
+    @Test
+    public void hashCodeSameObjectTest() {
+        Assertions.assertEquals(bookData.hashCode(), bookData.hashCode());
     }
 
     @Test
     public void hashCodeDifferentValuesTest() {
-        BookingDates bookingDates = new BookingDates("2022-01-01", "2022-01-02");
-        BookingDates bookingDates2 = new BookingDates("2022-01-01", "2024-01-02");
-        BookData book = new BookData("Jim", "Brown", 111, true, bookingDates, "Breakfast");
-        BookData book2 = new BookData("Jim", "Brown", 111, true, bookingDates2, "Breakfast");
-        Assertions.assertNotEquals(book.hashCode(), book2.hashCode());
+        BookData bookDataDiffBookingDates = new BookData("Jim", "Brown", 111, true, "2022-11-01", "2022-01-02", "Breakfast");
+        Assertions.assertNotEquals(bookData.hashCode(), bookDataDiffBookingDates.hashCode());
 
     }
 
     @Test
     public void toStringBookDataTest() {
-        BookingDates bookingDates = new BookingDates("2022-01-01", "2022-01-02");
-        BookData book = new BookData("Jim", "Brown", 111, true, bookingDates, "Breakfast");
         String expected = "BookData{firstName='Jim', lastName='Brown', totalPrice=111, depositPaid=true, bookingDates=BookingDates{checkOut='2022-01-02', checkIn='2022-01-01'}, additionalNeeds='Breakfast'}";
-        Assertions.assertEquals(expected, book.toString());
+        Assertions.assertEquals(expected, bookData.toString());
     }
 }
