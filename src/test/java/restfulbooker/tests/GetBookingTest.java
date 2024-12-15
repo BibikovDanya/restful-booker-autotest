@@ -1,10 +1,10 @@
-package restfulbooker;
+package restfulbooker.tests;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import restfulbooker.utils.Specification;
+import restfulbooker.models.BookData;
 
-import static io.restassured.RestAssured.given;
 
 public class GetBookingTest extends BaseBookingTest {
 

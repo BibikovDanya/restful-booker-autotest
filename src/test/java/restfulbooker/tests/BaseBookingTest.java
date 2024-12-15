@@ -1,7 +1,13 @@
-package restfulbooker;
+package restfulbooker.tests;
 
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
+import restfulbooker.utils.Specification;
+import restfulbooker.api.RequestFactory;
+import restfulbooker.models.BookData;
+import static io.restassured.http.Method.GET;
+import static io.restassured.http.Method.POST;
+
 
 public class BaseBookingTest {
     //TODO config env
@@ -18,7 +24,7 @@ public class BaseBookingTest {
 
     protected Response getBookingById(int id) {
         return RequestFactory
-                .createRequest("get", String.valueOf(id), null)
+                .createRequest(GET, String.valueOf(id), null)
                 .sendRequest();
 
 
@@ -26,13 +32,13 @@ public class BaseBookingTest {
 
     protected Response getAllBooking() {
         return RequestFactory
-                .createRequest("get", "", null)
+                .createRequest(GET, "", null)
                 .sendRequest();
     }
 
     protected Response createBooking(BookData bookInfo) {
         return RequestFactory
-                .createRequest("post", "", bookInfo)
+                .createRequest(POST, "", bookInfo)
                 .sendRequest();
     }
 

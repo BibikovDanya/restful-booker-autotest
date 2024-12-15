@@ -1,15 +1,18 @@
-package restfulbooker;
+package restfulbooker.tests.models;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import restfulbooker.models.BookData;
+import restfulbooker.models.BookingDates;
 
 class BookDataTest {
 
 
     @Test
     void equalsSameObjectTest() {
-        BookingDates bookingDates = new BookingDates("2022-01-01", "2022-01-02");
-        BookData book = new BookData("Jim", "Brown", 111, true, bookingDates, "Breakfast");
+//        BookingDates bookingDates = new BookingDates("2022-01-01", "2022-01-02");
+//        BookData book = new BookData("Jim", "Brown", 111, true, bookingDates, "Breakfast");
+        BookData book = new BookData("Jim", "Brown", 111, true, "2022-01-01", "2022-01-02", "Breakfast");
         Assertions.assertEquals(book, book);
     }
 

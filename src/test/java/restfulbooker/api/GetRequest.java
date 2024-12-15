@@ -1,16 +1,18 @@
-package restfulbooker;
+package restfulbooker.api;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 
-public class GetRequest implements ApiRequest{
+public class GetRequest implements ApiRequest {
     private String url;
 
-    public GetRequest(String url){
+    public GetRequest(String url) {
         this.url = url;
     }
-    public GetRequest(){
+
+    public GetRequest() {
     }
+
     @Override
     public Response sendRequest() {
         return RestAssured.get(url).then().log().all().extract().response();
