@@ -1,9 +1,8 @@
 package restfulbooker.tests;
 
-import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -21,28 +20,27 @@ public class GetBookingIdsTest extends BaseBookingTest {
 
         Response response = getAllBooking();
 
-        Assertions.assertEquals(200, response.statusCode());
-        Assertions.assertNotNull(response);
+        assertEquals(200, response.statusCode());
+        assertNotNull(response);
 
         JsonPath jsonPath = response.jsonPath();
         List<Integer> bookingIds = jsonPath.getList("bookingid");
         System.out.println(bookingIds.toString());
-        Assertions.assertTrue(bookingIds.stream().allMatch(Objects::nonNull),
+        assertTrue(bookingIds.stream().allMatch(Objects::nonNull),
                 "Все идентификаторы книг должны быть целыми числами");
 
     }
     // TODO refactor
     @ParameterizedTest(name = "Get ids by firstname = {0}")
-    @ValueSource(strings = {"Sally", "Guoqiang"})
+    @ValueSource(strings = {"Sally", "Guoqiang", "Jim"})
     public void getBookingIdFilterByFirstName(String firstName) {
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("firstname", firstName);
-        Response response = RestAssured.given().queryParams(queryParams).log().all().get().then().log().all().extract().response();
-        List<Integer> bookingIds = response.jsonPath().getList("bookingid");
+        List<Integer> bookingIds = getAllBooking(queryParams);
         // проверим, что все книги в ответе соответствуют queryParam
         for(Integer i : bookingIds){
             BookData book = getBookingById(i).jsonPath().getObject("", BookData.class);
-            Assertions.assertEquals(firstName, book.getFirstName());
+            assertEquals(firstName, book.getFirstName());
         }
 
     }

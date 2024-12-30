@@ -5,10 +5,14 @@ import org.junit.jupiter.api.BeforeAll;
 import restfulbooker.utils.Specification;
 import restfulbooker.api.RequestFactory;
 import restfulbooker.models.BookData;
+
+import java.util.List;
+import java.util.Map;
+
 import static io.restassured.http.Method.GET;
 import static io.restassured.http.Method.POST;
 
-
+//TODO разделить на request и helpers
 public class BaseBookingTest {
     //TODO config env
     private static final String baseUrl = "http://localhost:3001";
@@ -21,10 +25,10 @@ public class BaseBookingTest {
         Specification.installSpecification(Specification.responseSpecOK200());
 
     }
-
+    //TODO возвращать сразу объекты BookData
     protected Response getBookingById(int id) {
         return RequestFactory
-                .createRequest(GET, String.valueOf(id), null)
+                .createRequest(GET, String.valueOf(id), null, null)
                 .sendRequest();
 
 
@@ -32,13 +36,18 @@ public class BaseBookingTest {
 
     protected Response getAllBooking() {
         return RequestFactory
-                .createRequest(GET, "", null)
+                .createRequest(GET, "", null, null)
                 .sendRequest();
+    }
+    protected List<Integer> getAllBooking(Map<String, String> queryParams) {
+        return RequestFactory
+                .createRequest(GET, "", queryParams, null)
+                .sendRequest().jsonPath().getList("bookingid");
     }
 
     protected Response createBooking(BookData bookInfo) {
         return RequestFactory
-                .createRequest(POST, "", bookInfo)
+                .createRequest(POST, "", null, bookInfo)
                 .sendRequest();
     }
 
