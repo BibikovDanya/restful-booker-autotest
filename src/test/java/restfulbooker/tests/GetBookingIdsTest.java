@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import restfulbooker.models.BookData;
+import restfulbooker.utils.Specification;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,29 +18,24 @@ public class GetBookingIdsTest extends BaseBookingTest {
 
     @Test
     public void getBookingIdTest() {
+        List<Integer> bookingIds = bookingHelpers.getBookingsIds();
 
-        Response response = getAllBooking();
-
-        assertEquals(200, response.statusCode());
-        assertNotNull(response);
-
-        JsonPath jsonPath = response.jsonPath();
-        List<Integer> bookingIds = jsonPath.getList("bookingid");
-        System.out.println(bookingIds.toString());
         assertTrue(bookingIds.stream().allMatch(Objects::nonNull),
                 "Все идентификаторы книг должны быть целыми числами");
 
     }
-    // TODO refactor
+//    // TODO refactor
     @ParameterizedTest(name = "Get ids by firstname = {0}")
     @ValueSource(strings = {"Sally", "Guoqiang", "Jim"})
     public void getBookingIdFilterByFirstName(String firstName) {
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("firstname", firstName);
-        List<Integer> bookingIds = getAllBooking(queryParams);
+
+        List<Integer> bookingIds = bookingHelpers.getBookingsIds(queryParams);
+
         // проверим, что все книги в ответе соответствуют queryParam
         for(Integer i : bookingIds){
-            BookData book = getBookingById(i).jsonPath().getObject("", BookData.class);
+            BookData book = bookingHelpers.getBookingById(i);
             assertEquals(firstName, book.getFirstName());
         }
 
