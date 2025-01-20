@@ -10,9 +10,8 @@ public class CreateBookingTest extends BaseBookingTest {
     @Test
     public void createBookTest() {
         BookData book = new BookData("Jim", "Brown", 111, true, "2022-01-01", "2022-01-02", "Breakfast");
-        Response response = createBooking(book);
 
-        BookData createdBook = response.jsonPath().getObject("booking", BookData.class);
+        BookData createdBook = bookingHelpers.createBooking(book);
 
         assertEquals(book, createdBook);
 

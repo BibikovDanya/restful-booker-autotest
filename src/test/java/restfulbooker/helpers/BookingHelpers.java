@@ -26,7 +26,8 @@ public class BookingHelpers {
     }
 
 
-    public void createBooking() {
+    public BookData createBooking(BookData bookData) {
+        return bookingRequest.createBooking(bookData).jsonPath().getObject("booking", BookData.class);
 
     }
 
