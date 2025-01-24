@@ -23,25 +23,65 @@ public class BookData {
     @JsonProperty("additionalneeds")
     private String additionalNeeds;
 
-    public BookData() {
+    private BookData() {
     }
 
-    public BookData(String firstName, String lastName, Integer totalPrice, boolean depositPaid, BookingDates bookingDates, String additionalNeeds) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.totalPrice = totalPrice;
-        this.depositPaid = depositPaid;
-        this.bookingDates = bookingDates;
-        this.additionalNeeds = additionalNeeds;
+    private BookData(Builder builder) {
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.totalPrice = builder.totalPrice;
+        this.depositPaid = builder.depositPaid;
+        this.bookingDates = builder.bookingDates;
+        this.additionalNeeds = builder.additionalNeeds;
     }
 
-    public BookData(String firstName, String lastName, Integer totalPrice, boolean depositPaid, String checkIn, String checkOut,  String additionalNeeds) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.totalPrice = totalPrice;
-        this.depositPaid = depositPaid;
-        this.bookingDates = new BookingDates(checkIn, checkOut);
-        this.additionalNeeds = additionalNeeds;
+    public static class Builder {
+        private String firstName;
+        private String lastName;
+        private Integer totalPrice;
+        private boolean depositPaid;
+        private BookingDates bookingDates;
+        private String additionalNeeds;
+
+        public Builder firstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public Builder lastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public Builder totalPrice(Integer totalPrice) {
+            this.totalPrice = totalPrice;
+            return this;
+        }
+
+        public Builder depositPaid(boolean depositPaid) {
+            this.depositPaid = depositPaid;
+            return this;
+        }
+
+        public Builder bookingDates(BookingDates bookingDates) {
+            this.bookingDates = bookingDates;
+            return this;
+        }
+
+        public Builder bookingDates(String checkIn, String checkOut) {
+            this.bookingDates = new BookingDates(checkIn, checkOut);
+            return this;
+        }
+
+        public Builder additionalNeeds(String additionalNeeds) {
+            this.additionalNeeds = additionalNeeds;
+            return this;
+        }
+
+        public BookData build() {
+            return new BookData(this);
+        }
+
     }
 
     public String getFirstName() {
@@ -70,33 +110,25 @@ public class BookData {
 
     @Override
     public String toString() {
-        return "BookData{" +
-                "firstName='" + this.firstName + '\'' +
-                ", lastName='" + this.lastName + '\'' +
-                ", totalPrice=" + this.totalPrice +
-                ", depositPaid=" + this.depositPaid +
-                ", bookingDates=" + this.bookingDates +
-                ", additionalNeeds='" + this.additionalNeeds + '\'' +
-                '}';
+        return "BookData{" + "firstName='" + this.firstName + '\'' + ", lastName='" + this.lastName + '\'' + ", totalPrice="
+                + this.totalPrice + ", depositPaid=" + this.depositPaid + ", bookingDates=" + this.bookingDates
+                + ", additionalNeeds='" + this.additionalNeeds + '\'' + '}';
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
         BookData that = (BookData) obj;
-        return depositPaid == that.depositPaid &&
-                Objects.equals(firstName, that.firstName) &&
-                Objects.equals(lastName, that.lastName) &&
-                Objects.equals(totalPrice, that.totalPrice) &&
-                Objects.equals(bookingDates, that.bookingDates) &&
-                Objects.equals(additionalNeeds, that.additionalNeeds);
+        return depositPaid == that.depositPaid && Objects.equals(firstName, that.firstName)
+                && Objects.equals(lastName, that.lastName) && Objects.equals(totalPrice, that.totalPrice)
+                && Objects.equals(bookingDates, that.bookingDates) && Objects.equals(additionalNeeds, that.additionalNeeds);
     }
-
 
     @Override
     public int hashCode() {
         return Objects.hash(firstName, lastName, totalPrice, depositPaid, bookingDates, additionalNeeds);
     }
 }
-
