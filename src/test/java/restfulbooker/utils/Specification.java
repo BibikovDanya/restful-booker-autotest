@@ -6,6 +6,7 @@ import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import static java.net.HttpURLConnection.*;
 
 public class Specification {
 
@@ -17,24 +18,32 @@ public class Specification {
                 .build();
 
     }
+    public static RequestSpecification requestSpec(String url, String basePath) {
+        return new RequestSpecBuilder()
+                .setBaseUri(url)
+                .setBasePath(basePath)
+                .setContentType(ContentType.JSON)
+                .build();
+
+    }
 
     public static ResponseSpecification responseSpecOK200() {
         return new ResponseSpecBuilder()
-                .expectStatusCode(200)
+                .expectStatusCode(HTTP_OK)
                 .build();
     }
 
     public static ResponseSpecification responseSpecError400() {
 
         return new ResponseSpecBuilder()
-                .expectStatusCode(400)
+            .expectStatusCode(HTTP_BAD_REQUEST)
                 .build();
     }
 
     public static ResponseSpecification responseSpecError404() {
 
         return new ResponseSpecBuilder()
-                .expectStatusCode(404)
+                .expectStatusCode(HTTP_NOT_FOUND)
                 .build();
     }
 
