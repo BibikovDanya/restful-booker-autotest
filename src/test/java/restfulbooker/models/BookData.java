@@ -100,8 +100,8 @@ public class BookData {
         return depositPaid;
     }
 
-    public BookingDates getBookingDates() {
-        return bookingDates;
+    public BookingDates getBookingDates() throws CloneNotSupportedException {
+        return bookingDates.clone();
     }
 
     public String getAdditionalNeeds() {
