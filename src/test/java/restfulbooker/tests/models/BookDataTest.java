@@ -3,6 +3,7 @@ package restfulbooker.tests.models;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import restfulbooker.models.BookData;
 
@@ -23,22 +24,26 @@ class BookDataTest {
 
 
     @Test
+    @Tag("model")
     void equalsSameObjectTest() {
         assertEquals(bookData, bookData);
     }
 
     @Test
+    @Tag("model")
     void equalsNullTest() {
         assertFalse(bookData == null);
     }
 
     @Test
+    @Tag("model")
     void equalsDifferentClassTest() {
         Object obj = new Object();
         assertNotEquals(bookData, obj);
     }
 
     @Test
+    @Tag("model")
     void equalsSameValuesTest() {
         BookData bookData2 = new BookData.Builder()
                 .firstName("Jim")
@@ -52,6 +57,7 @@ class BookDataTest {
     }
 
     @Test
+    @Tag("model")
     void equalsDifferentValuesFirstNameTest() {
         BookData bookDataDiffFirstName = new BookData.Builder()
                 .firstName("Alex")
@@ -65,6 +71,7 @@ class BookDataTest {
     }
 
     @Test
+    @Tag("model")
     void equalsDifferentValuesLastNameTest() {
         BookData bookDataDiffLastName = new BookData.Builder()
                 .firstName("Jim")
@@ -79,6 +86,7 @@ class BookDataTest {
     }
 
     @Test
+    @Tag("model")
     void equalsDifferentValuesTotalPriceTest() {
         BookData bookDataDiffTotalPrice = new BookData.Builder()
                 .firstName("Jim")
@@ -92,6 +100,7 @@ class BookDataTest {
     }
 
     @Test
+    @Tag("model")
     void equalsDifferentValuesDepositPaidTest() {
         BookData bookDataDiffDepositPaid = new BookData.Builder()
                 .firstName("Jim")
@@ -106,6 +115,7 @@ class BookDataTest {
 
 
     @Test
+    @Tag("model")
     void equalsDifferentValuesBookingDatesTest() {
         BookData bookDataDiffBookingDates = new BookData.Builder()
                 .firstName("Jim")
@@ -119,6 +129,7 @@ class BookDataTest {
     }
 
     @Test
+    @Tag("model")
     void equalsDifferentValuesAdditionalNeedsTest() {
         BookData bookDataDiffBookingDates = new BookData.Builder()
                 .firstName("Jim")
@@ -132,6 +143,7 @@ class BookDataTest {
     }
 
     @Test
+    @Tag("model")
     public void hashCodeConsistencyTest() {
         BookData bookData2 = new BookData.Builder()
                 .firstName("Jim")
@@ -145,11 +157,13 @@ class BookDataTest {
     }
 
     @Test
+    @Tag("model")
     public void hashCodeSameObjectTest() {
         assertEquals(bookData.hashCode(), bookData.hashCode());
     }
 
     @Test
+    @Tag("model")
     public void hashCodeDifferentValuesTest() {
         BookData bookDataDiffBookingDates = new BookData.Builder()
                 .firstName("Jim")
@@ -164,6 +178,7 @@ class BookDataTest {
     }
 
     @Test
+    @Tag("model")
     public void toStringBookDataTest() {
         String expected = "BookData{firstName='Jim', lastName='Brown', totalPrice=111, depositPaid=true, bookingDates=BookingDates{checkOut='2022-01-02', checkIn='2022-01-01'}, additionalNeeds='Breakfast'}";
         assertEquals(expected, bookData.toString());

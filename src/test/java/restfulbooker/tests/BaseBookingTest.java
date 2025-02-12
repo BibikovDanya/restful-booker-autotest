@@ -6,7 +6,6 @@ import restfulbooker.api.requests.bookings.BookingRequest;
 import restfulbooker.helpers.BookingHelpers;
 import restfulbooker.utils.Specification;
 
-//TODO разделить на request и helpers
 public class BaseBookingTest {
     protected BookingRequest bookingRequest;
     protected BookingHelpers bookingHelpers;
