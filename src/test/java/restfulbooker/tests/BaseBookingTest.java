@@ -1,15 +1,15 @@
 package restfulbooker.tests;
 
-import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import restfulbooker.api.requests.bookings.BookingRequest;
+import restfulbooker.helpers.BookingHelpers;
 import restfulbooker.utils.Specification;
-import restfulbooker.api.RequestFactory;
-import restfulbooker.models.BookData;
-import static io.restassured.http.Method.GET;
-import static io.restassured.http.Method.POST;
-
 
 public class BaseBookingTest {
+    protected BookingRequest bookingRequest;
+    protected BookingHelpers bookingHelpers;
+
     //TODO config env
     private static final String baseUrl = "http://localhost:3001";
 //    private static final String baseUrl = "http://restful-booker.herokuapp.com";
@@ -17,29 +17,15 @@ public class BaseBookingTest {
 
     @BeforeAll
     public static void initSpecification() {
-        Specification.installSpecification(Specification.requestSpec(baseUrl + "/booking"));
+        Specification.installSpecification(Specification.requestSpec(baseUrl));
         Specification.installSpecification(Specification.responseSpecOK200());
 
     }
+    @BeforeEach
+    public void setUp() {
+        bookingRequest = new BookingRequest();
+        bookingHelpers = new BookingHelpers();
 
-    protected Response getBookingById(int id) {
-        return RequestFactory
-                .createRequest(GET, String.valueOf(id), null)
-                .sendRequest();
-
-
-    }
-
-    protected Response getAllBooking() {
-        return RequestFactory
-                .createRequest(GET, "", null)
-                .sendRequest();
-    }
-
-    protected Response createBooking(BookData bookInfo) {
-        return RequestFactory
-                .createRequest(POST, "", bookInfo)
-                .sendRequest();
     }
 
 }

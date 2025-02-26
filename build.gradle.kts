@@ -21,3 +21,17 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
+tasks.register<Test>("modelTests") {
+    useJUnitPlatform {
+        includeTags("model")
+    }
+}
+
+tasks.register<Test>("apiTests") {
+    useJUnitPlatform {
+        includeTags("api")
+    }
+    testLogging {
+        events("passed", "skipped", "failed", "standardOut", "standardError")
+    }
+}

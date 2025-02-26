@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
-public class BookingDates {
+public class BookingDates implements Cloneable {
     @JsonProperty("checkin")
     private String checkIn;
     @JsonProperty("checkout")
@@ -32,6 +32,11 @@ public class BookingDates {
 
     public void setCheckOut(String checkOut) {
         this.checkOut = checkOut;
+    }
+
+    @Override
+    public BookingDates clone() throws CloneNotSupportedException {
+        return (BookingDates) super.clone();
     }
 
     @Override
