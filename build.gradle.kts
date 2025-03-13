@@ -12,8 +12,9 @@ repositories {
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
-    testImplementation("io.rest-assured:rest-assured:5.5.0")
+    testImplementation("io.rest-assured:rest-assured:5.5.1")
     testImplementation("com.fasterxml.jackson.core", "jackson-databind", "2.18.1")
+    testImplementation("org.testcontainers:junit-jupiter:1.20.6")
 
 
 }

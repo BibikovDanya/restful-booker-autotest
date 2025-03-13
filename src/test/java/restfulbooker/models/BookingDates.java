@@ -7,31 +7,31 @@ import java.util.Objects;
 public class BookingDates implements Cloneable {
     @JsonProperty("checkin")
     private String checkIn;
-    @JsonProperty("checkout")
-    private String checkOut;
+    private String checkout;
+
 
     public BookingDates() {
     }
 
-    public BookingDates(String checkIn, String checkOut) {
+    public BookingDates(String checkIn, String checkout) {
         this.checkIn = checkIn;
-        this.checkOut = checkOut;
+        this.checkout = checkout;
     }
 
     public String getCheckIn() {
         return checkIn;
     }
 
-    public String getCheckOut() {
-        return checkOut;
+    public String getCheckout() {
+        return checkout;
     }
 
     public void setCheckIn(String checkIn) {
         this.checkIn = checkIn;
     }
 
-    public void setCheckOut(String checkOut) {
-        this.checkOut = checkOut;
+    public void setCheckout(String checkout) {
+        this.checkout = checkout;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class BookingDates implements Cloneable {
     @Override
     public String toString() {
         return "BookingDates{" +
-                "checkOut='" + this.checkOut + '\'' +
+                "checkOut='" + this.checkout + '\'' +
                 ", checkIn='" + this.checkIn + '\'' +
                 '}';
     }
@@ -52,11 +52,11 @@ public class BookingDates implements Cloneable {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         BookingDates that = (BookingDates) obj;
-        return Objects.equals(checkIn, that.checkIn) && Objects.equals(checkOut, that.checkOut);
+        return Objects.equals(checkIn, that.checkIn) && Objects.equals(checkout, that.checkout);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(checkIn, checkOut);
+        return Objects.hash(checkIn, checkout);
     }
 }

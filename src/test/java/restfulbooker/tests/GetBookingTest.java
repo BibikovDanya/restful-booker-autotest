@@ -23,7 +23,7 @@ public class GetBookingTest extends BaseBookingTest {
                 () -> assertTrue(response.getTotalPrice() > 0, "totalPrice < 0"),
 //                () -> assertTrue(response.isDepositPaid(), "depositPaid false"),
                 () -> assertTrue(response.getBookingDates().getCheckIn().matches(regexDateFormat), "date checkIn does not match the format"),
-                () -> assertTrue(response.getBookingDates().getCheckOut().matches(regexDateFormat), "date checkOut does not match the format")
+                () -> assertTrue(response.getBookingDates().getCheckout().matches(regexDateFormat), "date checkOut does not match the format")
         );
 
 
