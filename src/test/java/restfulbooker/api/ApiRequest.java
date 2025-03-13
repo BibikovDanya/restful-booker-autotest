@@ -6,13 +6,14 @@ import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class ApiRequest {
     private String url;
     private Method method;
     private Map<String, String> queryParams;
-    private Map<String, String> headers;
+    private Map<String, String> headers = new HashMap<>();
     private Object body;
 
     public ApiRequest(Method method, String url) {
@@ -51,6 +52,7 @@ public class ApiRequest {
         return switch (method) {
             case GET -> request.get(url).then().log().all().extract().response();
             case POST -> request.body(body).post(url).then().log().all().extract().response();
+            case PUT -> request.body(body).put(url).then().log().all().extract().response();
             default -> throw new IllegalArgumentException("Invalid method type: " + method);
         };
     }

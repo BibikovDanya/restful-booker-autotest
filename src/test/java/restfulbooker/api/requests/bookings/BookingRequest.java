@@ -4,10 +4,10 @@ import io.restassured.response.Response;
 import restfulbooker.api.ApiRequest;
 import restfulbooker.models.BookData;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import static io.restassured.http.Method.GET;
-import static io.restassured.http.Method.POST;
+import static io.restassured.http.Method.*;
 
 public class BookingRequest {
     private final String BASE_URL = "/booking";
@@ -21,12 +21,20 @@ public class BookingRequest {
     }
 
     public Response getBooking(Integer id) {
-        return new ApiRequest(GET, BASE_URL + '/' + +id).sendRequest();
+        return new ApiRequest(GET, BASE_URL + '/' + id).sendRequest();
     }
 
     public Response createBooking(BookData bookData) {
         return new ApiRequest(POST, BASE_URL).withBody(bookData).sendRequest();
     }
+
+    public Response updateBooking(Integer bookingId, BookData bookData, String token) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", token);
+        return new ApiRequest(PUT, BASE_URL + "/" + bookingId).withBody(bookData).withHeaders(headers).sendRequest();
+
+    }
+
 
 
 }

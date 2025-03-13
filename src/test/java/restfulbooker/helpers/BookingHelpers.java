@@ -31,4 +31,9 @@ public class BookingHelpers {
 
     }
 
+    public BookData updateBook(int bookId, BookData bookData, String token){
+        return bookingRequest.updateBooking(bookId, bookData, token).jsonPath().getObject("", BookData.class);
+
+    }
+
 }
