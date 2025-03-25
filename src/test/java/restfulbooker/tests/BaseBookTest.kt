@@ -6,7 +6,8 @@ import org.testcontainers.containers.GenericContainer
 import org.testcontainers.utility.DockerImageName
 import restfulbooker.api.requests.bookings.BookRequest
 import restfulbooker.helpers.BookHelpers
-import restfulbooker.utils.Specification
+import restfulbooker.utils.SpecificationNew.requestSpec
+import restfulbooker.utils.SpecificationNew.installSpecification
 import java.util.*
 
 open class BaseBookTest {
@@ -28,7 +29,7 @@ open class BaseBookTest {
         init {
             container = GenericContainer(DockerImageName.parse(IMAGE_NAME)).withExposedPorts(PORT)
             container.start()
-            Specification.installSpecification(Specification.requestSpec(getBaseUrl()))
+            installSpecification(requestSpec(baseUrl = getBaseUrl()))
         }
 
         @JvmStatic
