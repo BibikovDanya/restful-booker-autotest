@@ -20,5 +20,12 @@ class BookHelpers {
         return bookRequest.updateBooking(bookId, bookData, token).jsonPath().getObject("", Book::class.java)
     }
 
+    fun  partialUpdateBook(bookId: Int,params: Map<String, String>?, token: String):Book{
+        return bookRequest.partialUpdateBooking(
+            bookId,
+            params,
+            token).jsonPath().getObject("", Book::class.java)
+    }
+
 
 }
