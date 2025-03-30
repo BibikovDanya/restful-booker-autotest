@@ -4,8 +4,6 @@ import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.utility.DockerImageName
-import restfulbooker.api.requests.bookings.BookRequest
-import restfulbooker.helpers.BookHelpers
 import restfulbooker.utils.SpecificationNew.requestSpec
 import restfulbooker.utils.SpecificationNew.installSpecification
 import java.util.*
@@ -21,8 +19,6 @@ open class BaseBookTest {
         private var container: GenericContainer<*>
         private const val IMAGE_NAME: String = "restful-booker:latest"
         private const val PORT: Int = 3001
-        val bookRequest: BookRequest = BookRequest()
-        val bookHelpers: BookHelpers = BookHelpers()
         lateinit var adminLogin: String
         lateinit var adminPassword: String
 

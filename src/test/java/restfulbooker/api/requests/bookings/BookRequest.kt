@@ -1,31 +1,49 @@
 package restfulbooker.api.requests.bookings
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.kotlinModule
 import io.restassured.http.Method
 import io.restassured.response.Response
-import restfulbooker.api.ApiRequestNew
+import restfulbooker.api.ApiRequest
 import restfulbooker.models.Book
 
 class BookRequest {
     val baseUrl = "/booking"
+    private val mapper = jacksonObjectMapper()
+
 
     fun getBookingIds(params: Map<String, String>? = null): Response =
-        ApiRequestNew(Method.GET, baseUrl, queryParams = params).sendRequest()
+        ApiRequest(Method.GET, baseUrl, queryParams = params).sendRequest()
 
 
-    fun getBooking(id: Int): Response = ApiRequestNew(Method.GET, "$baseUrl/$id").sendRequest()
+    fun getBooking(id: Int): Response = ApiRequest(Method.GET, "$baseUrl/$id").sendRequest()
 
     fun createBooking(book: Book): Response {
         val objectMapper = ObjectMapper().registerModule(kotlinModule())
         val jsonBody = objectMapper.writeValueAsString(book)
-        return ApiRequestNew(Method.POST, baseUrl, body = jsonBody).sendRequest()
+        return ApiRequest(Method.POST, baseUrl, body = jsonBody).sendRequest()
     }
 
     fun updateBooking(bookId: Int, bookData: Book, token: String): Response {
-        return ApiRequestNew(
-            method = Method.PUT, url = "$baseUrl/$bookId", body = bookData, headers = mapOf("Authorization" to token)
+        return ApiRequest(
+            method = Method.PUT,
+            url = "$baseUrl/$bookId",
+            body = bookData,
+            headers = mapOf("Authorization" to token)
         ).sendRequest()
     }
+
+    fun partialUpdateBooking(bookId: Int, params: Map<String, String>?, token: String): Response {
+        val body = mapper.writeValueAsString(params)
+        return ApiRequest(
+            method = Method.PATCH,
+            url = "$baseUrl/$bookId",
+            body = body,
+            headers = mapOf("Authorization" to token)
+
+        ).sendRequest()
+    }
+
 
 }

@@ -5,7 +5,7 @@ import io.restassured.http.Method
 import io.restassured.response.Response
 import io.restassured.specification.RequestSpecification
 
-class ApiRequestNew(
+class ApiRequest(
     val method: Method = Method.GET, val url: String = "",
     val queryParams: Map<String, String?>? = null,
     val headers: Map<String, String?>? = null,
@@ -24,6 +24,7 @@ class ApiRequestNew(
             Method.GET -> request.get(url).then().log().all().extract().response()
             Method.POST -> request.body(body).post(url).then().log().all().extract().response()
             Method.PUT -> request.body(body).put(url).then().log().all().extract().response()
+            Method.PATCH -> request.body(body).patch(url).then().log().all().extract().response()
             else -> throw IllegalArgumentException("Invalid method type: $method")
         }
     }
