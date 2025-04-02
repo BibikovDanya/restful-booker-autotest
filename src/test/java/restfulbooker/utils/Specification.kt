@@ -26,6 +26,7 @@ object SpecificationNew {
     fun responseSpecOk() = responseSpec(SC_OK)
     fun responseSpecBadRequest() = responseSpec(SC_BAD_REQUEST)
     fun responseSpecNotFound() = responseSpec(SC_NOT_FOUND)
+    fun responseSpecForbidden() = responseSpec(SC_FORBIDDEN)
 
     fun installSpecification(request: RequestSpecification) {
         RestAssured.requestSpecification = request

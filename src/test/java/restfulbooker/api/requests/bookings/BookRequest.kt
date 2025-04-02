@@ -25,22 +25,24 @@ class BookRequest {
         return ApiRequest(Method.POST, baseUrl, body = jsonBody).sendRequest()
     }
 
-    fun updateBooking(bookId: Int, bookData: Book, token: String): Response {
+    fun updateBooking(bookId: Int, bookData: Book, token: String?): Response {
+        val headers = token?.let { mapOf("Authorization" to token) } ?: emptyMap()
         return ApiRequest(
             method = Method.PUT,
             url = "$baseUrl/$bookId",
             body = bookData,
-            headers = mapOf("Authorization" to token)
+            headers = headers
         ).sendRequest()
     }
 
-    fun partialUpdateBooking(bookId: Int, params: Map<String, String>?, token: String): Response {
+    fun partialUpdateBooking(bookId: Int, params: Map<String, String>?, token: String?): Response {
+        val headers = token?.let {  mapOf("Authorization" to token)} ?: emptyMap()
         val body = mapper.writeValueAsString(params)
         return ApiRequest(
             method = Method.PATCH,
             url = "$baseUrl/$bookId",
             body = body,
-            headers = mapOf("Authorization" to token)
+            headers = headers
 
         ).sendRequest()
     }

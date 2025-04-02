@@ -13,6 +13,7 @@ import restfulbooker.models.BookingDatesNew
 import restfulbooker.utils.SpecificationNew.installSpecification
 import restfulbooker.utils.SpecificationNew.responseSpecNotFound
 import restfulbooker.utils.SpecificationNew.responseSpecOk
+import restfulbooker.utils.SpecificationNew.responseSpecForbidden
 import java.util.stream.Stream
 import restfulbooker.helpers.BookHelpers.getBookById
 import restfulbooker.helpers.BookHelpers.getBooksIds
@@ -128,10 +129,22 @@ class BookTest : BaseBookTest() {
         val oldBook: Book? = getBookById(1)
         val updateBook =
             Book("Jon", "Minov", 111, false, BookingDatesNew("2024-11-11", "2024-11-12"), "Br")
-        val actualBook: Book = updateBook(1, updateBook, adminToken)
+        val actualBook: Book? = updateBook(1, updateBook, adminToken)
 
         assertEquals(updateBook, actualBook)
         assertNotEquals(oldBook, actualBook)
+    }
+
+    @Tag("UpdateBooking")
+    @Test
+    fun updateFullBookTokenNoPresentTest() {
+        installSpecification(responseSpecForbidden())
+        val updateBook =
+            Book("Jon", "Minov", 111, false, BookingDatesNew("2024-11-11", "2024-11-12"), "Br")
+        val actualBook: Book? = updateBook(1, updateBook)
+
+        assertNull(actualBook)
+
     }
 
     @Tag("PartialUpdateBooking")
@@ -149,13 +162,25 @@ class BookTest : BaseBookTest() {
         assertAll(
             "в ответе приходит обновленная книга",
             Executable { assertEquals(newBook, actualBook) },
-            Executable { assertEquals(newFirstName, actualBook.firstName) },
+            Executable { assertEquals(newFirstName, actualBook?.firstName) },
         )
         assertAll(
             "при запросе обновленной книги, возвращается обновленная книга",
             Executable { assertEquals(newBook, getBookById(bookId)) },
             Executable { assertEquals(newFirstName, getBookById(bookId)?.firstName) },
         )
+    }
+
+    @Tag("PartialUpdateBooking")
+    @Test
+    fun partialUpdateBookTokenNoPresentTest() {
+        installSpecification(responseSpecForbidden())
+        val bookId = 1
+        val newFirstName = "Jon"
+
+        val actualBook = partialUpdateBook(bookId, mapOf("firstname" to newFirstName))
+        assertNull(actualBook)
+
     }
 
     companion object {
