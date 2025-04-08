@@ -6,6 +6,7 @@ import restfulbooker.models.Book
 import org.apache.http.HttpStatus.SC_NOT_FOUND
 import org.apache.http.HttpStatus.SC_OK
 
+// TODO обработка статусов
 object BookHelpers {
     private val bookRequest: BookRequest = BookRequest()
 
@@ -17,7 +18,6 @@ object BookHelpers {
         val response:Response =   bookRequest.getBooking(bookId)
        return when (response.statusCode){
            SC_OK -> response.jsonPath().getObject("", Book::class.java)
-           SC_NOT_FOUND -> null
            else -> null
 
        }
@@ -30,15 +30,21 @@ object BookHelpers {
         return bookRequest.createBooking(bookData).jsonPath().getObject("booking", Book::class.java)
     }
 
-    fun updateBook(bookId: Int, bookData: Book, token: String): Book {
-        return bookRequest.updateBooking(bookId, bookData, token).jsonPath().getObject("", Book::class.java)
+    fun updateBook(bookId: Int, bookData: Book, token: String? = null): Book? {
+        val response:Response = bookRequest.updateBooking(bookId, bookData, token)
+        return when (response.statusCode){
+            SC_OK -> response.jsonPath().getObject("", Book::class.java)
+            else -> null
+        }
     }
 
-    fun  partialUpdateBook(bookId: Int,params: Map<String, String>?, token: String):Book{
-        return bookRequest.partialUpdateBooking(
-            bookId,
-            params,
-            token).jsonPath().getObject("", Book::class.java)
+    fun  partialUpdateBook(bookId: Int,params: Map<String, String>?, token: String? = null):Book?{
+        val response:Response = bookRequest.partialUpdateBooking(bookId, params, token)
+
+        return when(response.statusCode){
+            SC_OK -> response.jsonPath().getObject("", Book::class.java)
+            else -> null
+        }
     }
 
 
