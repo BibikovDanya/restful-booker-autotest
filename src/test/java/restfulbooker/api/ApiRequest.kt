@@ -25,6 +25,7 @@ class ApiRequest(
             Method.POST -> request.body(body).post(url).then().log().all().extract().response()
             Method.PUT -> request.body(body).put(url).then().log().all().extract().response()
             Method.PATCH -> request.body(body).patch(url).then().log().all().extract().response()
+            Method.DELETE -> request.delete(url).then().log().all().extract().response()
             else -> throw IllegalArgumentException("Invalid method type: $method")
         }
     }

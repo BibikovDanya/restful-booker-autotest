@@ -36,7 +36,7 @@ tasks.register<Test>("modelTests") {
 
 tasks.register<Test>("allBookTest") {
     useJUnitPlatform {
-        includeTags("GetBooking", "GetBookingIds", "CreateBooking", "UpdateBooking", "PartialUpdateBooking")
+        includeTags("getBooking", "getBookingIds", "createBooking", "updateBooking", "partialUpdateBooking")
     }
     testLogging {
         events("passed", "skipped", "failed", "standardOut", "standardError")

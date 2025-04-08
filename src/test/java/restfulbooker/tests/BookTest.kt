@@ -1,5 +1,11 @@
 package restfulbooker.tests
 
+import org.junit.jupiter.api.Assertions.assertAll
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
@@ -8,19 +14,21 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import org.junit.jupiter.params.provider.ValueSource
+import restfulbooker.helpers.BookHelpers.createBook
+import restfulbooker.helpers.BookHelpers.deleteBook
+import restfulbooker.helpers.BookHelpers.getBookById
+import restfulbooker.helpers.BookHelpers.getBooksIds
+import restfulbooker.helpers.BookHelpers.partialUpdateBook
+import restfulbooker.helpers.BookHelpers.updateBook
 import restfulbooker.models.Book
 import restfulbooker.models.BookingDatesNew
 import restfulbooker.utils.SpecificationNew.installSpecification
+import restfulbooker.utils.SpecificationNew.responseSpecCreated
+import restfulbooker.utils.SpecificationNew.responseSpecCustomCode
+import restfulbooker.utils.SpecificationNew.responseSpecForbidden
 import restfulbooker.utils.SpecificationNew.responseSpecNotFound
 import restfulbooker.utils.SpecificationNew.responseSpecOk
-import restfulbooker.utils.SpecificationNew.responseSpecForbidden
 import java.util.stream.Stream
-import restfulbooker.helpers.BookHelpers.getBookById
-import restfulbooker.helpers.BookHelpers.getBooksIds
-import restfulbooker.helpers.BookHelpers.createBook
-import restfulbooker.helpers.BookHelpers.updateBook
-import restfulbooker.helpers.BookHelpers.partialUpdateBook
-import org.junit.jupiter.api.Assertions.*
 
 class BookTest : BaseBookTest() {
     @BeforeEach
@@ -28,8 +36,10 @@ class BookTest : BaseBookTest() {
         installSpecification(responseSpecOk())
     }
 
+    private val adminToken: String = getAuthHeader(adminLogin, adminPassword)
+
     @Test
-    @Tag("GetBooking")
+    @Tag("getBooking")
     fun getBookTest() {
         val regexDateFormat = "^(19|20)\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$"
 
@@ -37,7 +47,8 @@ class BookTest : BaseBookTest() {
 
         assertAll(
             "Checks books",
-            Executable { assertNotNull(book?.firstName) },
+            Executable { assertNotNull(book, "Book is null") },
+            Executable { assertNotNull(book?.firstName, "firstName is null") },
             Executable { assertNotNull(book?.lastName, "lastName is null") },
             Executable { assertTrue(book?.totalPrice!! > 0, "totalPrice < 0") },
             Executable {
@@ -56,14 +67,14 @@ class BookTest : BaseBookTest() {
     }
 
     @Test
-    @Tag("GetBooking")
+    @Tag("getBooking")
     fun bookNotFoundTest() {
         installSpecification(responseSpecNotFound())
         assertNull(getBookById(404))
     }
 
     @Test
-    @Tag("GetBookingIds")
+    @Tag("getBookingIds")
     fun getBooksIdsTest() {
         val bookIds: List<Int>? = getBooksIds()
         bookIds?.forEach { it ->
@@ -71,7 +82,7 @@ class BookTest : BaseBookTest() {
         }
     }
 
-    @Tag("GetBookingIds")
+    @Tag("getBookingIds")
     @ParameterizedTest(name = "Get ids by firstname = {0}")
     @ValueSource(strings = ["Mark", "Mary", "Sally"])
     fun getBookingIdFilterByFirstNameTest(firstName: String) {
@@ -82,7 +93,7 @@ class BookTest : BaseBookTest() {
         }
     }
 
-    @Tag("GetBookingIds")
+    @Tag("getBookingIds")
     @ParameterizedTest(name = "Get ids by lastName = {0}")
     @ValueSource(strings = ["Jones", "Wilson", "Jackson"])
     fun getBookingIdFilterByLastNameTest(lastName: String) {
@@ -93,10 +104,13 @@ class BookTest : BaseBookTest() {
         }
     }
 
-    @Tag("GetBookingIds")
+    @Tag("getBookingIds")
     @ParameterizedTest(name = "Get ids by checkIn = {0}, checkOut = {1}")
     @MethodSource("provideCheckInAndCheckout")
-    fun getBookingIdFilterByCheckInAndCheckOutTest(checkIn: String, checkout: String) {
+    fun getBookingIdFilterByCheckInAndCheckOutTest(
+        checkIn: String,
+        checkout: String,
+    ) {
         val bookingIds: List<Int>? = getBooksIds(mapOf("checkin" to checkIn, "checkout" to checkout))
 
         bookingIds?.forEach { it ->
@@ -105,7 +119,7 @@ class BookTest : BaseBookTest() {
         }
     }
 
-    @Tag("CreateBooking")
+    @Tag("createBooking")
     @Test
     fun createBookTest() {
         val book =
@@ -118,14 +132,13 @@ class BookTest : BaseBookTest() {
                 additionalNeeds = "Breakfast",
             )
 
-        val createdBook: Book = createBook(book)
+        val createdBook: Book? = createBook(book)
         assertEquals(book, createdBook)
     }
 
-    @Tag("UpdateBooking")
+    @Tag("updateBooking")
     @Test
     fun updateFullBookTest() {
-        val adminToken: String = getAuthHeader(adminLogin, adminPassword)
         val oldBook: Book? = getBookById(1)
         val updateBook =
             Book("Jon", "Minov", 111, false, BookingDatesNew("2024-11-11", "2024-11-12"), "Br")
@@ -135,7 +148,7 @@ class BookTest : BaseBookTest() {
         assertNotEquals(oldBook, actualBook)
     }
 
-    @Tag("UpdateBooking")
+    @Tag("updateBooking")
     @Test
     fun updateFullBookTokenNoPresentTest() {
         installSpecification(responseSpecForbidden())
@@ -144,13 +157,11 @@ class BookTest : BaseBookTest() {
         val actualBook: Book? = updateBook(1, updateBook)
 
         assertNull(actualBook)
-
     }
 
-    @Tag("PartialUpdateBooking")
+    @Tag("partialUpdateBooking")
     @Test
     fun updateFirstNameBookTest() {
-        val adminToken: String = getAuthHeader(adminLogin, adminPassword)
         val bookId = 1
         val newFirstName = "Jon"
 
@@ -171,7 +182,7 @@ class BookTest : BaseBookTest() {
         )
     }
 
-    @Tag("PartialUpdateBooking")
+    @Tag("partialUpdateBooking")
     @Test
     fun partialUpdateBookTokenNoPresentTest() {
         installSpecification(responseSpecForbidden())
@@ -180,15 +191,42 @@ class BookTest : BaseBookTest() {
 
         val actualBook = partialUpdateBook(bookId, mapOf("firstname" to newFirstName))
         assertNull(actualBook)
+    }
 
+    @Tag("partialUpdateBooking")
+    @Test
+    fun partialUpdateBookNotFoundTest() {
+        installSpecification(responseSpecCustomCode(405))
+        val bookId = 404
+        val newFirstName = "Jon"
+
+        val actualBook = partialUpdateBook(bookId, mapOf("firstname" to newFirstName), adminToken)
+        assertNull(actualBook)
+    }
+
+    @Tag("deleteBooking")
+    @Test
+    fun deleteBookTest() {
+        installSpecification(responseSpecCreated())
+
+        deleteBook(4, adminToken)
+    }
+
+    @Tag("deleteBooking")
+    @Test
+    fun deleteBookTokenNoPresentTest() {
+        installSpecification(responseSpecForbidden())
+
+        deleteBook(4)
     }
 
     companion object {
         @JvmStatic
-        fun provideCheckInAndCheckout(): Stream<Arguments> = Stream.of(
-            Arguments.of("2014-03-13", "2022-10-20"),
-            Arguments.of("2022-03-13", "2022-10-20"),
-            Arguments.of("2019-06-01", "2019-08-31"),
-        )
+        fun provideCheckInAndCheckout(): Stream<Arguments> =
+            Stream.of(
+                Arguments.of("2014-03-13", "2022-10-20"),
+                Arguments.of("2022-03-13", "2022-10-20"),
+                Arguments.of("2019-06-01", "2019-08-31"),
+            )
     }
 }

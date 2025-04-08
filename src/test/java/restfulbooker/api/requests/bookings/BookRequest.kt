@@ -12,10 +12,7 @@ class BookRequest {
     val baseUrl = "/booking"
     private val mapper = jacksonObjectMapper()
 
-
-    fun getBookingIds(params: Map<String, String>? = null): Response =
-        ApiRequest(Method.GET, baseUrl, queryParams = params).sendRequest()
-
+    fun getBookingIds(params: Map<String, String>? = null): Response = ApiRequest(Method.GET, baseUrl, queryParams = params).sendRequest()
 
     fun getBooking(id: Int): Response = ApiRequest(Method.GET, "$baseUrl/$id").sendRequest()
 
@@ -25,27 +22,48 @@ class BookRequest {
         return ApiRequest(Method.POST, baseUrl, body = jsonBody).sendRequest()
     }
 
-    fun updateBooking(bookId: Int, bookData: Book, token: String?): Response {
-        val headers = token?.let { mapOf("Authorization" to token) } ?: emptyMap()
+    fun updateBooking(
+        bookId: Int,
+        bookData: Book,
+        token: String?,
+    ): Response {
+        val headers = token?.let { mapOf(AUTH_HEADER to token) } ?: emptyMap()
         return ApiRequest(
             method = Method.PUT,
             url = "$baseUrl/$bookId",
             body = bookData,
-            headers = headers
+            headers = headers,
         ).sendRequest()
     }
 
-    fun partialUpdateBooking(bookId: Int, params: Map<String, String>?, token: String?): Response {
-        val headers = token?.let {  mapOf("Authorization" to token)} ?: emptyMap()
+    fun partialUpdateBooking(
+        bookId: Int,
+        params: Map<String, String>?,
+        token: String?,
+    ): Response {
+        val headers = token?.let { mapOf(AUTH_HEADER to token) } ?: emptyMap()
         val body = mapper.writeValueAsString(params)
         return ApiRequest(
             method = Method.PATCH,
             url = "$baseUrl/$bookId",
             body = body,
-            headers = headers
-
+            headers = headers,
         ).sendRequest()
     }
 
+    fun deleteBook(
+        bookId: Int,
+        token: String?,
+    ): Response {
+        val headers = token?.let { mapOf(AUTH_HEADER to token) ?: emptyMap() }
+        return ApiRequest(
+            method = Method.DELETE,
+            url = "$baseUrl/$bookId",
+            headers = headers,
+        ).sendRequest()
+    }
 
+    companion object {
+        const val AUTH_HEADER = "Authorization"
+    }
 }
