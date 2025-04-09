@@ -8,7 +8,7 @@ import restfulbooker.utils.SpecificationNew.requestSpec
 import restfulbooker.utils.SpecificationNew.installSpecification
 import java.util.*
 
-open class BaseBookTest {
+open class BaseTest {
     protected fun getAuthHeader(login: String, password: String): String {
         val auth = "$login:$password"
         val encodedAuth = Base64.getEncoder().encode(auth.toByteArray())

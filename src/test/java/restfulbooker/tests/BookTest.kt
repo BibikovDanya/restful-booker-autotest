@@ -30,7 +30,7 @@ import restfulbooker.utils.SpecificationNew.responseSpecNotFound
 import restfulbooker.utils.SpecificationNew.responseSpecOk
 import java.util.stream.Stream
 
-class BookTest : BaseBookTest() {
+class BookTest : BaseTest() {
     @BeforeEach
     fun setSpec() {
         installSpecification(responseSpecOk())
