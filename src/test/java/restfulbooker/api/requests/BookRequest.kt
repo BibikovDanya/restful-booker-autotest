@@ -1,4 +1,4 @@
-package restfulbooker.api.requests.bookings
+package restfulbooker.api.requests
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -9,10 +9,9 @@ import restfulbooker.api.ApiRequest
 import restfulbooker.models.Book
 
 class BookRequest {
-    val baseUrl = "/booking"
-    private val mapper = jacksonObjectMapper()
 
-    fun getBookingIds(params: Map<String, String>? = null): Response = ApiRequest(Method.GET, baseUrl, queryParams = params).sendRequest()
+    fun getBookingIds(params: Map<String, String>? = null): Response =
+        ApiRequest(Method.GET, baseUrl, queryParams = params).sendRequest()
 
     fun getBooking(id: Int): Response = ApiRequest(Method.GET, "$baseUrl/$id").sendRequest()
 
@@ -65,5 +64,7 @@ class BookRequest {
 
     companion object {
         const val AUTH_HEADER = "Authorization"
+        private val baseUrl = "/booking"
+        private val mapper = jacksonObjectMapper()
     }
 }
