@@ -1,26 +1,22 @@
 package restfulbooker.tests
 
-
-import org.junit.jupiter.api.Test
 import org.apache.http.HttpStatus.SC_OK
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertAll
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Tag
-import org.junit.jupiter.api.function.Executable
+import org.junit.jupiter.api.Test
 import restfulbooker.api.requests.AuthRequest
 
 class AuthTest : BaseTest() {
-
     @Test
     @Tag("auth")
     fun getTokenTest() {
         val response = AuthRequest().getToken(adminLogin, adminPassword)
         assertAll(
-            Executable { assertNotNull(response.jsonPath().getString("token")) },
-            Executable { assertEquals(SC_OK, response.statusCode) },
-
-            )
+            { assertNotNull(response.jsonPath().getString("token")) },
+            { assertEquals(SC_OK, response.statusCode) },
+        )
     }
 
     @Test
@@ -28,10 +24,9 @@ class AuthTest : BaseTest() {
     fun getTokenBadLoginTest() {
         val response = AuthRequest().getToken("user", adminPassword)
         assertAll(
-            Executable { assertEquals(BAD_CREDENTIALS_MESSAGE, response.jsonPath().getString("reason")) },
-            Executable { assertEquals(SC_OK, response.statusCode) },
-
-            )
+            { assertEquals(BAD_CREDENTIALS_MESSAGE, response.jsonPath().getString(REASON)) },
+            { assertEquals(SC_OK, response.statusCode) },
+        )
     }
 
     @Test
@@ -39,10 +34,9 @@ class AuthTest : BaseTest() {
     fun getTokenBadPassTest() {
         val response = AuthRequest().getToken(adminLogin, adminPassword.drop(3))
         assertAll(
-            Executable { assertEquals(BAD_CREDENTIALS_MESSAGE, response.jsonPath().getString("reason")) },
-            Executable { assertEquals(SC_OK, response.statusCode) },
-
-            )
+            { assertEquals(BAD_CREDENTIALS_MESSAGE, response.jsonPath().getString(REASON)) },
+            { assertEquals(SC_OK, response.statusCode) },
+        )
     }
 
     @Test
@@ -50,10 +44,9 @@ class AuthTest : BaseTest() {
     fun getTokenLoginNoPresentTest() {
         val response = AuthRequest().getToken(pass = adminPassword)
         assertAll(
-            Executable { assertEquals(BAD_CREDENTIALS_MESSAGE, response.jsonPath().getString("reason")) },
-            Executable { assertEquals(SC_OK, response.statusCode) },
-
-            )
+            { assertEquals(BAD_CREDENTIALS_MESSAGE, response.jsonPath().getString(REASON)) },
+            { assertEquals(SC_OK, response.statusCode) },
+        )
     }
 
     @Test
@@ -61,15 +54,13 @@ class AuthTest : BaseTest() {
     fun getTokenPassNoPresentTest() {
         val response = AuthRequest().getToken(login = adminLogin)
         assertAll(
-            Executable { assertEquals(BAD_CREDENTIALS_MESSAGE, response.jsonPath().getString("reason")) },
-            Executable { assertEquals(SC_OK, response.statusCode) },
-
-            )
-
+            { assertEquals(BAD_CREDENTIALS_MESSAGE, response.jsonPath().getString(REASON)) },
+            { assertEquals(SC_OK, response.statusCode) },
+        )
     }
 
     companion object {
-       const val BAD_CREDENTIALS_MESSAGE = "Bad credentials"
+        const val REASON = "reason"
+        const val BAD_CREDENTIALS_MESSAGE = "Bad credentials"
     }
-
 }
