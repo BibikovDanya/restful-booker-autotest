@@ -278,7 +278,6 @@ class BookTest : BaseTest() {
 
     companion object {
         private const val BOOKING_ID_KEY = "bookingid"
-//        private const val BOOKING_KEY = "booking"
 
         @JvmStatic
         fun dateFiltersProvider(): Stream<Arguments> =
